@@ -1,5 +1,21 @@
 package com.mtaerohand.duelsupportspring.Services;
 
-public class ModeService {
+import java.util.List;
 
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
+import com.mtaerohand.duelsupportspring.Entities.Mode;
+import com.mtaerohand.duelsupportspring.Repositories.ModeRepository;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class ModeService {
+    private final ModeRepository modeRepository;
+
+    public List<Mode> getAllModes() {
+        return modeRepository.findAll(Sort.by(Sort.Direction.DESC, "isPermanent"));
+    }
 }
