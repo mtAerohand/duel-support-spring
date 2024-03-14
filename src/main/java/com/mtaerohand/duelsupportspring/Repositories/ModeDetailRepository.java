@@ -11,6 +11,6 @@ import com.mtaerohand.duelsupportspring.Entities.ModeDetail;
 
 @Repository
 public interface ModeDetailRepository extends JpaRepository<ModeDetail, Integer> {
-    @Query("SELECT m FROM ModeDetail m WHERE m.startDatetime <= :currentDate AND m.endDatetime >= :currentDate")
-    List<ModeDetail> findAllOngoing(LocalDateTime currentDate);
+    @Query("SELECT m FROM ModeDetail m WHERE :modeId = m.modeId AND m.startDatetime <= :currentDatetime AND m.endDatetime >= :currentDatetime")
+    List<ModeDetail> findAllOngoingByModeId(Integer modeId, LocalDateTime currentDatetime);
 }

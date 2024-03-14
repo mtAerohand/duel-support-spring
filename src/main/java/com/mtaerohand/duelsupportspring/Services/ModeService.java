@@ -24,6 +24,6 @@ public class ModeService {
     }
 
     public List<ModeDetail> getModeDetailsOngoing(Integer modeId) {
-        return modeDetailRepository.findAllOngoing(LocalDateTime.now());
+        return modeDetailRepository.findAllOngoingByModeId(modeId, LocalDateTime.now());
     }
 }
