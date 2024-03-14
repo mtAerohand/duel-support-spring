@@ -5,13 +5,17 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mtaerohand.duelsupportspring.Controllers.GameController.ResponseEntities.GetInitializeDataResponse.GetInitializeDataResponse;
 import com.mtaerohand.duelsupportspring.Controllers.GameController.ResponseEntities.GetInitializeDataResponse.InternalDTO.DeckDTO;
 import com.mtaerohand.duelsupportspring.Controllers.GameController.ResponseEntities.GetInitializeDataResponse.InternalDTO.ModeDTO;
+import com.mtaerohand.duelsupportspring.Controllers.GameController.ResponseEntities.GetModeDetailsOngoingResponse.GetModeDetailsOngoingResponse;
+import com.mtaerohand.duelsupportspring.Controllers.GameController.ResponseEntities.GetModeDetailsOngoingResponse.InternalDTO.ModeDetailDTO;
 import com.mtaerohand.duelsupportspring.Entities.Deck;
 import com.mtaerohand.duelsupportspring.Entities.Mode;
+import com.mtaerohand.duelsupportspring.Entities.ModeDetail;
 import com.mtaerohand.duelsupportspring.Services.DeckService;
 import com.mtaerohand.duelsupportspring.Services.ModeService;
 
@@ -52,6 +56,30 @@ public class GameController {
 
         response.setDecks(responseDecks);
         response.setModes(responseModes);
+
+        return response;
+    }
+
+    @GetMapping("/mode-details/ongoing")
+    public GetModeDetailsOngoingResponse getModeDetailsOngoing(@RequestParam("modeId") Integer modeId) {
+        GetModeDetailsOngoingResponse response = new GetModeDetailsOngoingResponse();
+
+        List<ModeDetail> modeDetailsOngoing = modeService.getModeDetailsOngoing(modeId);
+
+        List<ModeDetailDTO> responseModeDetails = new ArrayList<ModeDetailDTO>();
+
+        response.setModeId(modeId);
+
+        for (ModeDetail modeDetail : modeDetailsOngoing) {
+            ModeDetailDTO dto = new ModeDetailDTO();
+            dto.setId(modeDetail.getId());
+            dto.setName(modeDetail.getName());
+            dto.setStartDatetime(modeDetail.getStartDatetime());
+            dto.setEndDatetime(modeDetail.getEndDatetime());
+            responseModeDetails.add(dto);
+        }
+
+        response.setModeDetails(responseModeDetails);
 
         return response;
     }
