@@ -9,11 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mtaerohand.duelsupportspring.Controllers.GameController.ResponseEntities.GetModeDetailsOngoingResponse;
 import com.mtaerohand.duelsupportspring.Controllers.GameController.ResponseEntities.GetInitializeDataResponse.GetInitializeDataResponse;
 import com.mtaerohand.duelsupportspring.Controllers.GameController.ResponseEntities.GetInitializeDataResponse.InternalDTO.DeckDTO;
 import com.mtaerohand.duelsupportspring.Controllers.GameController.ResponseEntities.GetInitializeDataResponse.InternalDTO.ModeDTO;
-import com.mtaerohand.duelsupportspring.Controllers.GameController.ResponseEntities.GetModeDetailsOngoingResponse.GetModeDetailsOngoingResponse;
-import com.mtaerohand.duelsupportspring.Controllers.GameController.ResponseEntities.GetModeDetailsOngoingResponse.InternalDTO.ModeDetailDTO;
 import com.mtaerohand.duelsupportspring.Entities.Deck;
 import com.mtaerohand.duelsupportspring.Entities.Mode;
 import com.mtaerohand.duelsupportspring.Entities.ModeDetail;
@@ -62,27 +61,23 @@ public class GameController {
     }
 
     @GetMapping("/mode-details/ongoing")
-    public ResponseEntity<GetModeDetailsOngoingResponse> getModeDetailsOngoing(@RequestParam("modeId") Integer modeId) {
-        GetModeDetailsOngoingResponse res = new GetModeDetailsOngoingResponse();
+    public ResponseEntity<List<GetModeDetailsOngoingResponse>> getModeDetailsOngoing(
+            @RequestParam("modeId") Integer modeId) {
+        List<GetModeDetailsOngoingResponse> resList = new ArrayList<GetModeDetailsOngoingResponse>();
 
         List<ModeDetail> modeDetailsOngoing = modeService.getModeDetailsOngoing(modeId);
 
-        List<ModeDetailDTO> resModeDetails = new ArrayList<ModeDetailDTO>();
-
-        res.setModeId(modeId);
-
         for (ModeDetail modeDetail : modeDetailsOngoing) {
-            ModeDetailDTO dto = new ModeDetailDTO();
-            dto.setId(modeDetail.getId());
-            dto.setName(modeDetail.getName());
-            dto.setStartDatetime(modeDetail.getStartDatetime());
-            dto.setEndDatetime(modeDetail.getEndDatetime());
-            resModeDetails.add(dto);
+            GetModeDetailsOngoingResponse res = new GetModeDetailsOngoingResponse();
+            res.setId(modeDetail.getId());
+            res.setModeId(modeDetail.getModeId());
+            res.setName(modeDetail.getName());
+            res.setStartDatetime(modeDetail.getStartDatetime());
+            res.setEndDatetime(modeDetail.getEndDatetime());
+            resList.add(res);
         }
 
-        res.setModeDetails(resModeDetails);
-
-        return ResponseEntity.ok(res);
+        return ResponseEntity.ok(resList);
     }
 
     @GetMapping("/decks")
