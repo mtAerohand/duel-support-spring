@@ -3,6 +3,7 @@ package com.mtaerohand.duelsupportspring.Controllers.GameController;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,22 +29,22 @@ public class GameController {
     private final DeckService deckService;
     private final ModeService modeService;
 
-    @GetMapping("/initialize")
-    public GetInitializeDataResponse getInitializeData() {
-        GetInitializeDataResponse response = new GetInitializeDataResponse();
+    @GetMapping("/initialize-data")
+    public ResponseEntity<GetInitializeDataResponse> getInitializeData() {
+        GetInitializeDataResponse res = new GetInitializeDataResponse();
 
         List<Deck> decks = deckService.getAllDecks();
         List<Mode> modes = modeService.getAllModes();
 
-        List<DeckDTO> responseDecks = new ArrayList<DeckDTO>();
-        List<ModeDTO> responseModes = new ArrayList<ModeDTO>();
+        List<DeckDTO> resDecks = new ArrayList<DeckDTO>();
+        List<ModeDTO> resModes = new ArrayList<ModeDTO>();
 
         for (Deck deck : decks) {
             DeckDTO dto = new DeckDTO();
             dto.setId(deck.getId());
             dto.setName(deck.getName());
             dto.setPronounce(deck.getPronounce());
-            responseDecks.add(dto);
+            resDecks.add(dto);
         }
 
         for (Mode mode : modes) {
@@ -51,24 +52,24 @@ public class GameController {
             dto.setId(mode.getId());
             dto.setName(mode.getName());
             dto.setPronounce(mode.getPronounce());
-            responseModes.add(dto);
+            resModes.add(dto);
         }
 
-        response.setDecks(responseDecks);
-        response.setModes(responseModes);
+        res.setDecks(resDecks);
+        res.setModes(resModes);
 
-        return response;
+        return ResponseEntity.ok(res);
     }
 
     @GetMapping("/mode-details/ongoing")
-    public GetModeDetailsOngoingResponse getModeDetailsOngoing(@RequestParam("modeId") Integer modeId) {
-        GetModeDetailsOngoingResponse response = new GetModeDetailsOngoingResponse();
+    public ResponseEntity<GetModeDetailsOngoingResponse> getModeDetailsOngoing(@RequestParam("modeId") Integer modeId) {
+        GetModeDetailsOngoingResponse res = new GetModeDetailsOngoingResponse();
 
         List<ModeDetail> modeDetailsOngoing = modeService.getModeDetailsOngoing(modeId);
 
-        List<ModeDetailDTO> responseModeDetails = new ArrayList<ModeDetailDTO>();
+        List<ModeDetailDTO> resModeDetails = new ArrayList<ModeDetailDTO>();
 
-        response.setModeId(modeId);
+        res.setModeId(modeId);
 
         for (ModeDetail modeDetail : modeDetailsOngoing) {
             ModeDetailDTO dto = new ModeDetailDTO();
@@ -76,12 +77,12 @@ public class GameController {
             dto.setName(modeDetail.getName());
             dto.setStartDatetime(modeDetail.getStartDatetime());
             dto.setEndDatetime(modeDetail.getEndDatetime());
-            responseModeDetails.add(dto);
+            resModeDetails.add(dto);
         }
 
-        response.setModeDetails(responseModeDetails);
+        res.setModeDetails(resModeDetails);
 
-        return response;
+        return ResponseEntity.ok(res);
     }
 
     @GetMapping("/decks")
