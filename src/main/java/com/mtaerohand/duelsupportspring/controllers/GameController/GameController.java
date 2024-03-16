@@ -4,29 +4,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mtaerohand.duelsupportspring.Controllers.GameController.ResponseEntities.CreateGameRequest;
+import com.mtaerohand.duelsupportspring.Controllers.GameController.ResponseEntities.CreateGameResponse;
 import com.mtaerohand.duelsupportspring.Controllers.GameController.ResponseEntities.GetModeDetailsOngoingResponse;
 import com.mtaerohand.duelsupportspring.Controllers.GameController.ResponseEntities.GetInitializeDataResponse.GetInitializeDataResponse;
 import com.mtaerohand.duelsupportspring.Controllers.GameController.ResponseEntities.GetInitializeDataResponse.InternalDTO.DeckDTO;
 import com.mtaerohand.duelsupportspring.Controllers.GameController.ResponseEntities.GetInitializeDataResponse.InternalDTO.ModeDTO;
 import com.mtaerohand.duelsupportspring.Entities.Deck;
+import com.mtaerohand.duelsupportspring.Entities.Game;
 import com.mtaerohand.duelsupportspring.Entities.Mode;
 import com.mtaerohand.duelsupportspring.Entities.ModeDetail;
 import com.mtaerohand.duelsupportspring.Services.DeckService;
+import com.mtaerohand.duelsupportspring.Services.GameService;
 import com.mtaerohand.duelsupportspring.Services.ModeService;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/game")
+@CrossOrigin("http://localhost:3000")
 public class GameController {
     private final DeckService deckService;
     private final ModeService modeService;
+    private final GameService gameService;
 
     @GetMapping("/initialize-data")
     public ResponseEntity<GetInitializeDataResponse> getInitializeData() {
@@ -78,6 +87,36 @@ public class GameController {
         }
 
         return ResponseEntity.ok(resList);
+    }
+
+    @PostMapping("/game")
+    public ResponseEntity<CreateGameResponse> createGame(@RequestBody CreateGameRequest req) {
+        CreateGameResponse res = new CreateGameResponse();
+
+        Game gameForCreate = new Game();
+
+        gameForCreate.setModeId(req.getModeId());
+        gameForCreate.setModeDetailId(req.getModeDetailId());
+        gameForCreate.setDatetime(req.getDatetime());
+        gameForCreate.setMyDeckId(req.getMyDeckId());
+        gameForCreate.setIsFirstAttack(req.getIsFirstAttack());
+        gameForCreate.setOpDeckId(req.getOpDeckId());
+        gameForCreate.setResult(req.getResult());
+        gameForCreate.setRemarks(req.getRemarks());
+
+        Game createdGame = gameService.createGame(gameForCreate);
+
+        res.setId(createdGame.getId());
+        res.setModeId(createdGame.getModeId());
+        res.setModeDetailId(createdGame.getModeDetailId());
+        res.setDatetime(createdGame.getDatetime());
+        res.setMyDeckId(createdGame.getMyDeckId());
+        res.setIsFirstAttack(createdGame.getIsFirstAttack());
+        res.setOpDeckId(createdGame.getOpDeckId());
+        res.setResult(createdGame.getResult());
+        res.setRemarks(createdGame.getRemarks());
+
+        return ResponseEntity.ok(res);
     }
 
     @GetMapping("/decks")

@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 
+// TODO: updatedAtに監査で取得した値を設定する
 @Entity
 @Data
 public class Game {
@@ -29,6 +30,8 @@ public class Game {
     private Integer opDeckId;
 
     private Integer result;
+
+    private String remarks;
 
     private Timestamp updatedAt;
 }
