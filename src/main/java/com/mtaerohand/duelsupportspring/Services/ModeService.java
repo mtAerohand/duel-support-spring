@@ -1,5 +1,6 @@
 package com.mtaerohand.duelsupportspring.Services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.domain.Sort;
@@ -20,6 +21,6 @@ public class ModeService {
     }
 
     public List<Mode> getModesOngoing() {
-        return modeRepository.findAllModesOngoing();
+        return modeRepository.findAllModesOngoing(LocalDateTime.now());
     }
 }

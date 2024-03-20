@@ -1,5 +1,6 @@
 package com.mtaerohand.duelsupportspring.Repositories;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.domain.Sort;
@@ -14,8 +15,7 @@ public interface ModeRepository extends JpaRepository<Mode, Integer> {
     @SuppressWarnings("null")
     List<Mode> findAll(Sort sort);
 
-    @Query("SELECT m FROM Mode m LEFT JOIN m.modeDetails md " +
-            "WHERE m.id = md.mode.id " +
-            "AND CURRENT_TIMESTAMP BETWEEN md.startDatetime AND md.endDatetime")
-    List<Mode> findAllModesOngoing();
+    @Query("SELECT m FROM Mode m LEFT JOIN FETCH m.modeDetails md " +
+            "WHERE CURRENT_TIMESTAMP BETWEEN md.startDatetime AND md.endDatetime")
+    List<Mode> findAllModesOngoing(LocalDateTime currentDatetime);
 }
