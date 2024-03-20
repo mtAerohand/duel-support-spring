@@ -7,15 +7,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mtaerohand.duelsupportspring.Controllers.GameController.ResponseEntities.CreateGameRequest;
-import com.mtaerohand.duelsupportspring.Controllers.GameController.ResponseEntities.CreateGameResponse;
-import com.mtaerohand.duelsupportspring.Controllers.GameController.ResponseEntities.GetModeDetailsOngoingResponse;
+import com.mtaerohand.duelsupportspring.Controllers.GameController.FrontEntities.FrontDeck;
+import com.mtaerohand.duelsupportspring.Controllers.GameController.FrontEntities.FrontGame;
+import com.mtaerohand.duelsupportspring.Controllers.GameController.FrontEntities.FrontMode;
+import com.mtaerohand.duelsupportspring.Controllers.GameController.FrontEntities.FrontModeDetail;
+import com.mtaerohand.duelsupportspring.Controllers.GameController.RequestEntities.CreateGameRequest;
 import com.mtaerohand.duelsupportspring.Controllers.GameController.ResponseEntities.GetInitializeDataResponse.GetInitializeDataResponse;
-import com.mtaerohand.duelsupportspring.Controllers.GameController.ResponseEntities.GetInitializeDataResponse.InternalDTO.DeckDTO;
-import com.mtaerohand.duelsupportspring.Controllers.GameController.ResponseEntities.GetInitializeDataResponse.InternalDTO.ModeDTO;
+import com.mtaerohand.duelsupportspring.Controllers.GameController.ResponseEntities.GetInitializeDataResponse.ModeOngoing;
 import com.mtaerohand.duelsupportspring.Entities.Deck;
 import com.mtaerohand.duelsupportspring.Entities.Game;
 import com.mtaerohand.duelsupportspring.Entities.Mode;
@@ -28,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+// TODO: レスポンスエンティティにマッピング用のコンストラクタ作っても良いかもね
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/game")
@@ -41,57 +42,74 @@ public class GameController {
     public ResponseEntity<GetInitializeDataResponse> getInitializeData() {
         GetInitializeDataResponse res = new GetInitializeDataResponse();
 
-        List<Deck> decks = deckService.getAllDecks();
-        List<Mode> modes = modeService.getAllModes();
+        List<Deck> decks = deckService.getDecks();
+        List<Mode> modes = modeService.getModes();
+        List<Mode> modesOngoing = modeService.getModesOngoing();
 
-        List<DeckDTO> resDecks = new ArrayList<DeckDTO>();
-        List<ModeDTO> resModes = new ArrayList<ModeDTO>();
+        List<FrontDeck> resDecks = new ArrayList<FrontDeck>();
+        List<FrontMode> resModes = new ArrayList<FrontMode>();
+        List<ModeOngoing> resModesOngoing = new ArrayList<ModeOngoing>();
 
         for (Deck deck : decks) {
-            DeckDTO dto = new DeckDTO();
-            dto.setId(deck.getId());
-            dto.setName(deck.getName());
-            dto.setPronounce(deck.getPronounce());
-            resDecks.add(dto);
+            FrontDeck frontDeck = new FrontDeck();
+
+            frontDeck.setId(deck.getId());
+            frontDeck.setName(deck.getName());
+            frontDeck.setPronounce(deck.getPronounce());
+            frontDeck.setRemarks(deck.getRemarks());
+
+            resDecks.add(frontDeck);
         }
 
         for (Mode mode : modes) {
-            ModeDTO dto = new ModeDTO();
-            dto.setId(mode.getId());
-            dto.setName(mode.getName());
-            dto.setPronounce(mode.getPronounce());
-            resModes.add(dto);
+            FrontMode frontMode = new FrontMode();
+
+            frontMode.setId(mode.getId());
+            frontMode.setName(mode.getName());
+            frontMode.setPronounce(mode.getPronounce());
+            frontMode.setIsPermanent(mode.getIsPermanent());
+            frontMode.setRemarks(mode.getRemarks());
+
+            resModes.add(frontMode);
+        }
+
+        for (Mode modeOngoing : modesOngoing) {
+            ModeOngoing resModeOngoing = new ModeOngoing();
+
+            FrontMode frontMode = new FrontMode();
+            FrontModeDetail frontModeDetail = new FrontModeDetail();
+
+            ModeDetail modeDetail = modeOngoing.getModeDetails().get(0);
+
+            frontMode.setId(modeOngoing.getId());
+            frontMode.setName(modeOngoing.getName());
+            frontMode.setPronounce(modeOngoing.getPronounce());
+            frontMode.setIsPermanent(modeOngoing.getIsPermanent());
+            frontMode.setRemarks(modeOngoing.getRemarks());
+
+            frontModeDetail.setId(modeDetail.getId());
+            frontModeDetail.setModeId(modeDetail.getMode().getId());
+            frontModeDetail.setName(modeDetail.getName());
+            frontModeDetail.setStartDatetime(modeDetail.getStartDatetime());
+            frontModeDetail.setEndDatetime(modeDetail.getEndDatetime());
+            frontModeDetail.setRemarks(modeDetail.getRemarks());
+
+            resModeOngoing.setModeOngoing(frontMode);
+            resModeOngoing.setModeDetailOngoing(frontModeDetail);
+
+            resModesOngoing.add(resModeOngoing);
         }
 
         res.setDecks(resDecks);
         res.setModes(resModes);
+        res.setModesOngoing(resModesOngoing);
 
         return ResponseEntity.ok(res);
     }
 
-    @GetMapping("/mode-details/ongoing")
-    public ResponseEntity<List<GetModeDetailsOngoingResponse>> getModeDetailsOngoing(
-            @RequestParam("modeId") Integer modeId) {
-        List<GetModeDetailsOngoingResponse> resList = new ArrayList<GetModeDetailsOngoingResponse>();
-
-        List<ModeDetail> modeDetailsOngoing = modeService.getModeDetailsOngoing(modeId);
-
-        for (ModeDetail modeDetail : modeDetailsOngoing) {
-            GetModeDetailsOngoingResponse res = new GetModeDetailsOngoingResponse();
-            res.setId(modeDetail.getId());
-            res.setModeId(modeDetail.getModeId());
-            res.setName(modeDetail.getName());
-            res.setStartDatetime(modeDetail.getStartDatetime());
-            res.setEndDatetime(modeDetail.getEndDatetime());
-            resList.add(res);
-        }
-
-        return ResponseEntity.ok(resList);
-    }
-
     @PostMapping("/game")
-    public ResponseEntity<CreateGameResponse> createGame(@RequestBody CreateGameRequest req) {
-        CreateGameResponse res = new CreateGameResponse();
+    public ResponseEntity<FrontGame> createGame(@RequestBody CreateGameRequest req) {
+        FrontGame res = new FrontGame();
 
         Game gameForCreate = new Game();
 
@@ -118,15 +136,4 @@ public class GameController {
 
         return ResponseEntity.ok(res);
     }
-
-    @GetMapping("/decks")
-    public List<Deck> getAllDecks() {
-        return deckService.getAllDecks();
-    }
-
-    // @GetMapping("/modes/ongoing")
-    // public List getModesOngoing() {
-    // return new String();
-    // }
-
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.mtaerohand.duelsupportspring.Entities.Mode;
@@ -12,4 +13,9 @@ import com.mtaerohand.duelsupportspring.Entities.Mode;
 public interface ModeRepository extends JpaRepository<Mode, Integer> {
     @SuppressWarnings("null")
     List<Mode> findAll(Sort sort);
+
+    @Query("SELECT m FROM Mode m LEFT JOIN m.modeDetails md " +
+            "WHERE m.id = md.mode.id " +
+            "AND CURRENT_TIMESTAMP BETWEEN md.startDatetime AND md.endDatetime")
+    List<Mode> findAllModesOngoing();
 }

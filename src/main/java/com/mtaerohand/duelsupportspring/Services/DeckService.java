@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 public class DeckService {
     private final DeckRepository deckRepository;
 
-    public List<Deck> getAllDecks() {
+    public List<Deck> getDecks() {
         return deckRepository.findAll();
     }
 }

@@ -7,5 +7,4 @@ import com.mtaerohand.duelsupportspring.Entities.Deck;
 
 @Repository
 public interface DeckRepository extends JpaRepository<Deck, Integer> {
-
 }

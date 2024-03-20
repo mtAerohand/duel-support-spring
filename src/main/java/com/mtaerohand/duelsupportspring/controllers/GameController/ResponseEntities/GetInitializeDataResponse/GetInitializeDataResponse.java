@@ -2,13 +2,14 @@ package com.mtaerohand.duelsupportspring.Controllers.GameController.ResponseEnti
 
 import java.util.List;
 
-import com.mtaerohand.duelsupportspring.Controllers.GameController.ResponseEntities.GetInitializeDataResponse.InternalDTO.DeckDTO;
-import com.mtaerohand.duelsupportspring.Controllers.GameController.ResponseEntities.GetInitializeDataResponse.InternalDTO.ModeDTO;
+import com.mtaerohand.duelsupportspring.Controllers.GameController.FrontEntities.FrontDeck;
+import com.mtaerohand.duelsupportspring.Controllers.GameController.FrontEntities.FrontMode;
 
 import lombok.Data;
 
 @Data
 public class GetInitializeDataResponse {
-    private List<DeckDTO> decks;
-    private List<ModeDTO> modes;
+    private List<FrontDeck> decks;
+    private List<FrontMode> modes;
+    private List<ModeOngoing> modesOngoing;
 }
