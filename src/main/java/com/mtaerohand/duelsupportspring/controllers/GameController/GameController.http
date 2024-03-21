@@ -1,0 +1,23 @@
+### Base URL
+
+@baseUrl = http://localhost:8080/game
+
+### 初期化データの一括取得
+
+GET {{baseUrl}}/initialize-data
+
+### Gameの作成
+
+POST {{baseUrl}}/game
+Content-Type: application/json
+
+{
+    "modeId": "1",
+    "modeDetailId": "1",
+    "datetime": "2024-01-01T10:00:00",
+    "myDeckId": "1",
+    "isFirstAttack": "true",
+    "opDeckId": "3",
+    "result": "2",
+    "remarks": "あああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ"
+}

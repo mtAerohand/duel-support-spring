@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,20 +25,29 @@ import com.mtaerohand.duelsupportspring.Services.DeckService;
 import com.mtaerohand.duelsupportspring.Services.GameService;
 import com.mtaerohand.duelsupportspring.Services.ModeService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-// TODO: レスポンスエンティティにマッピング用のコンストラクタ作っても良いかもね
+/**
+ * GameArea用Controller
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/game")
+@Validated
 @CrossOrigin("http://localhost:3000")
 public class GameController {
     private final DeckService deckService;
     private final ModeService modeService;
     private final GameService gameService;
 
+    /**
+     * 初期化データの一括取得
+     * 
+     * @return デッキ一覧、モード一覧、現在有効なモード、モード詳細セット一覧
+     */
     @GetMapping("/initialize-data")
     public ResponseEntity<GetInitializeDataResponse> getInitializeData() {
         GetInitializeDataResponse res = new GetInitializeDataResponse();
@@ -107,8 +117,14 @@ public class GameController {
         return ResponseEntity.ok(res);
     }
 
+    /**
+     * Gameの作成
+     * 
+     * @param req Game作成リクエスト
+     * @return 作成したGame
+     */
     @PostMapping("/game")
-    public ResponseEntity<FrontGame> createGame(@RequestBody CreateGameRequest req) {
+    public ResponseEntity<FrontGame> createGame(@Valid @RequestBody CreateGameRequest req) throws Exception {
         FrontGame res = new FrontGame();
 
         Game gameForCreate = new Game();
@@ -123,7 +139,6 @@ public class GameController {
         gameForCreate.setRemarks(req.getRemarks());
 
         Game createdGame = gameService.createGame(gameForCreate);
-
         res.setId(createdGame.getId());
         res.setModeId(createdGame.getModeId());
         res.setModeDetailId(createdGame.getModeDetailId());
