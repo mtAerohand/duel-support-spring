@@ -17,5 +17,5 @@ public interface ModeRepository extends JpaRepository<Mode, Integer> {
 
     @Query("SELECT m FROM Mode m LEFT JOIN FETCH m.modeDetails md " +
             "WHERE CURRENT_TIMESTAMP BETWEEN md.startDatetime AND md.endDatetime")
-    List<Mode> findAllModesOngoing(LocalDateTime currentDatetime);
+    List<Mode> findAllOngoingModes(LocalDateTime currentDatetime);
 }

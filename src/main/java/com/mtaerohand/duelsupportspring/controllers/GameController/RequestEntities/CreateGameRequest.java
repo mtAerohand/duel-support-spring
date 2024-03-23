@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 /**
- * Game作成リクエスト
+ * 試合作成リクエスト
  */
 // TODO: エラーメッセージを別ファイルにまとめたい
 @Data

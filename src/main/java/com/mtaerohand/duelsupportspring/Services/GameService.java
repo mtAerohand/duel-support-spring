@@ -1,5 +1,7 @@
 package com.mtaerohand.duelsupportspring.Services;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.mtaerohand.duelsupportspring.Entities.Game;
@@ -23,6 +25,21 @@ public class GameService {
 
     @SuppressWarnings("null")
     public Game createGame(Game game) throws Exception {
+        masterCheck(game);
+        return gameRepository.save(game);
+    }
+
+    @SuppressWarnings("null")
+    public List<Game> createGames(List<Game> games) throws Exception {
+        for (Game game : games) {
+            masterCheck(game);
+        }
+
+        return gameRepository.saveAll(games);
+    }
+
+    @SuppressWarnings("null")
+    private void masterCheck(Game game) throws Exception {
         if (!modeRepository.existsById(game.getModeId())) {
             throw new Exception("モードが不正です。");
         } else if (!modeDetailRepository.existsById(game.getModeDetailId())) {
@@ -39,7 +56,5 @@ public class GameService {
                 throw new Exception("試合日時が不正です。");
             }
         }
-
-        return gameRepository.save(game);
     }
 }

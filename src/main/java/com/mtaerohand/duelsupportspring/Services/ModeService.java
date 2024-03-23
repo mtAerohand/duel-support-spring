@@ -20,7 +20,7 @@ public class ModeService {
         return modeRepository.findAll(Sort.by(Sort.Direction.DESC, "isPermanent"));
     }
 
-    public List<Mode> getModesOngoing() {
-        return modeRepository.findAllModesOngoing(LocalDateTime.now());
+    public List<Mode> getOngoingModes() {
+        return modeRepository.findAllOngoingModes(LocalDateTime.now());
     }
 }
