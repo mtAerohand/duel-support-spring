@@ -30,10 +30,10 @@ public class SpreadSheetController {
      * @return
      */
     @PostMapping("games")
-    public ResponseEntity<List<FrontGame>> createGames(@RequestBody List<CreateGameRequest> req) {
+    public ResponseEntity<List<FrontGame>> createGames(@RequestBody CreateGamesRequest req) {
         List<Game> gamesForCreate = new ArrayList<Game>();
 
-        for (CreateGameRequest reqItem : req) {
+        for (CreateGameRequest reqItem : req.getGames()) {
             Game gameForCreate = new Game();
 
             gameForCreate.setModeId(reqItem.getModeId());
