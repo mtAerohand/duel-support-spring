@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequiredArgsConstructor
 @RequestMapping("game")
 @Validated
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin("*")
 public class GameController {
     private final DeckService deckService;
     private final ModeService modeService;

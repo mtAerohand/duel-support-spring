@@ -1,4 +1,4 @@
-package com.mtaerohand.duelsupportspring.Controllers.GameController;
+package com.mtaerohand.duelsupportspring.Controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
