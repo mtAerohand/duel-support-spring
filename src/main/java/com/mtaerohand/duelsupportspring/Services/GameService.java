@@ -1,5 +1,6 @@
 package com.mtaerohand.duelsupportspring.Services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -39,6 +40,13 @@ public class GameService {
     }
 
     @SuppressWarnings("null")
+    public List<Game> createGamesTolerant(List<Game> games) {
+        List<Game> filteredGames = torerantFilter(games);
+
+        return gameRepository.saveAll(filteredGames);
+    }
+
+    @SuppressWarnings("null")
     private void masterCheck(Game game) throws Exception {
         if (!modeRepository.existsById(game.getModeId())) {
             throw new Exception("モードが不正です。");
@@ -56,5 +64,36 @@ public class GameService {
                 throw new Exception("試合日時が不正です。");
             }
         }
+    }
+
+    private List<Game> torerantFilter(List<Game> games) {
+        List<Game> filteredGames = new ArrayList<Game>();
+
+        for (Game game : games) {
+            if (game.getModeId() == null) {
+                continue;
+            } else if (game.getModeDetailId() == null) {
+                continue;
+            } else if (game.getDatetime() == null) {
+                continue;
+            } else if (game.getMyDeckId() == null) {
+                continue;
+            } else if (game.getIsFirstAttack() == null) {
+                continue;
+            } else if (game.getResult() == null || game.getResult() < 0 || game.getResult() > 2) {
+                continue;
+            } else if (game.getRemarks().length() > 100) {
+                continue;
+            } else {
+                try {
+                    masterCheck(game);
+                    filteredGames.add(game);
+                } catch (Exception e) {
+                    continue;
+                }
+            }
+        }
+
+        return filteredGames;
     }
 }
