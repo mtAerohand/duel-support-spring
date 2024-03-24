@@ -1,5 +1,6 @@
 package com.mtaerohand.duelsupportspring.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -9,9 +10,11 @@ import org.springframework.stereotype.Service;
 
 import com.mtaerohand.duelsupportspring.controller.ModeController.GetModesRequest;
 import com.mtaerohand.duelsupportspring.controller.ModeController.GetModesResponse.GetModesResponse;
+import com.mtaerohand.duelsupportspring.repository.ModeDetailRepository.ModeDetail;
+import com.mtaerohand.duelsupportspring.repository.ModeDetailRepository.ModeDetailRepository;
+import com.mtaerohand.duelsupportspring.repository.ModeDetailRepository.ModeDetailSpecifications;
 import com.mtaerohand.duelsupportspring.repository.ModeRepository.Mode;
 import com.mtaerohand.duelsupportspring.repository.ModeRepository.ModeRepository;
-import com.mtaerohand.duelsupportspring.repository.ModeRepository.ModeSpecifications;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,7 +26,9 @@ import lombok.RequiredArgsConstructor;
 public class ModeService {
     private final ModeRepository modeRepository;
 
-    private final ModeSpecifications modeSpecifications;
+    private final ModeDetailRepository modeDetailRepository;
+
+    private final ModeDetailSpecifications modeDetailSpecifications;
 
     private final ModelMapper modelMapper;
 
@@ -34,9 +39,19 @@ public class ModeService {
      * @return モード一覧情報の取得レスポンス
      */
     public List<GetModesResponse> getModes(GetModesRequest req) {
-        List<Mode> modes;
+        List<Mode> modes = new ArrayList<>();
         if (req.getIsOngoing()) {
-            modes = modeRepository.findAll(modeSpecifications.isOngoing(), Sort.by(Sort.Direction.DESC, "isPermanent"));
+            @SuppressWarnings("null")
+            List<ModeDetail> ongoingModeDetails = modeDetailRepository.findAll(modeDetailSpecifications.isOngoing());
+
+            for (ModeDetail modeDetail : ongoingModeDetails) {
+                Mode ongoingMode = modeDetail.getMode();
+                List<ModeDetail> modeDetails = new ArrayList<ModeDetail>();
+                modeDetails.add(modeDetail);
+                ongoingMode.setModeDetails(modeDetails);
+
+                modes.add(ongoingMode);
+            }
         } else {
             modes = modeRepository.findAll(Sort.by(Sort.Direction.DESC, "isPermanent"));
         }
