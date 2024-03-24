@@ -9,8 +9,14 @@ import org.springframework.stereotype.Component;
 
 import jakarta.persistence.criteria.Predicate;
 
+/**
+ * モード詳細Specifications
+ */
 @Component
 public class ModeDetailSpecifications {
+    /**
+     * 現在有効なモード詳細か
+     */
     public Specification<ModeDetail> isOngoing() {
         return (root, query, builder) -> {
             LocalDateTime currentDateTime = LocalDateTime.now();

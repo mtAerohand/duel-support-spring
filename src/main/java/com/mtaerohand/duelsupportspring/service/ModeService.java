@@ -41,6 +41,7 @@ public class ModeService {
     public List<GetModesResponse> getModes(GetModesRequest req) {
         List<Mode> modes = new ArrayList<>();
         if (req.getIsOngoing()) {
+            // 現在有効なモード一覧情報を取得する
             @SuppressWarnings("null")
             List<ModeDetail> ongoingModeDetails = modeDetailRepository.findAll(modeDetailSpecifications.isOngoing());
 
@@ -53,6 +54,7 @@ public class ModeService {
                 modes.add(ongoingMode);
             }
         } else {
+            // モード一覧情報を取得する
             modes = modeRepository.findAll(Sort.by(Sort.Direction.DESC, "isPermanent"));
         }
 
