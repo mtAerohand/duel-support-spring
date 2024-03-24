@@ -37,5 +37,5 @@ public class Game {
     private Integer result;
 
     @Size(max = 100, message = "備考は100文字以内で入力してください。")
-    private Integer remarks;
+    private String remarks;
 }

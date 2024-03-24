@@ -32,11 +32,22 @@ public class GameService {
      * @param req 試合情報の一括作成リクエスト
      */
     @SuppressWarnings("null")
-    public List<CreateGamesResponse> createGames(CreateGamesRequest req) {
+    public List<CreateGamesResponse> createGames(CreateGamesRequest req) throws Exception {
         List<Game> games = modelMapper.map(req.getGames(), new TypeToken<List<Game>>() {
         }.getType());
 
-        List<Game> createdGames = gameRepository.saveAll(games);
+        // ModelMapperが勝手にIdを設定してしまうのでnullに再設定
+        for (Game game : games) {
+            game.setId(null);
+        }
+
+        List<Game> createdGames;
+
+        try {
+            createdGames = gameRepository.saveAll(games);
+        } catch (Exception e) {
+            throw new Exception("試合情報を保存できませんでした。");
+        }
 
         List<CreateGamesResponse> res = modelMapper.map(createdGames, new TypeToken<List<CreateGamesResponse>>() {
         }.getType());

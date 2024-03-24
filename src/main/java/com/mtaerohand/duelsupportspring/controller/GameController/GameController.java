@@ -32,7 +32,8 @@ public class GameController {
      * @return 試合情報の一括作成レスポンス
      */
     @PostMapping("games")
-    public ResponseEntity<List<CreateGamesResponse>> createGames(@Valid @RequestBody CreateGamesRequest req) {
+    public ResponseEntity<List<CreateGamesResponse>> createGames(@Valid @RequestBody CreateGamesRequest req)
+            throws Exception {
         List<CreateGamesResponse> res = gameService.createGames(req);
         return ResponseEntity.ok(res);
     }
