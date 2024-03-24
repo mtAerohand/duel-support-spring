@@ -4,8 +4,9 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.mtaerohand.duelsupportspring.controller.BaseController;
 import com.mtaerohand.duelsupportspring.controller.ModeController.GetModesResponse.GetModesResponse;
 import com.mtaerohand.duelsupportspring.service.ModeService;
 
@@ -14,8 +15,10 @@ import lombok.RequiredArgsConstructor;
 /**
  * モード情報コントローラ
  */
+@RestController
 @RequiredArgsConstructor
-public class ModeController extends BaseController {
+@RequestMapping("api/v1")
+public class ModeController {
     private final ModeService modeService;
 
     /**
