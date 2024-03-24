@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mtaerohand.duelsupportspring.controller.GameController.CreateGamesResponse;
+import com.mtaerohand.duelsupportspring.controller.GameController.CreateGamesTorelantResponse;
 import com.mtaerohand.duelsupportspring.controller.GameController.CreateGamesRequest.CreateGamesRequest;
+import com.mtaerohand.duelsupportspring.controller.GameController.CreateGamesTorelantRequest.CreateGamesTorelantRequest;
 import com.mtaerohand.duelsupportspring.repository.GameRepository.Game;
 import com.mtaerohand.duelsupportspring.repository.GameRepository.GameRepository;
 
@@ -55,7 +57,40 @@ public class GameService {
         return res;
     }
 
-    private List<Game> torerantFilter(List<Game> games) {
+    /**
+     * 試合情報の一括作成(寛容)
+     * 
+     * @param req 試合情報の一括作成(寛容)リクエスト
+     */
+    @SuppressWarnings("null")
+    public List<CreateGamesTorelantResponse> createGamesTorelant(CreateGamesTorelantRequest req) throws Exception {
+        List<Game> games = modelMapper.map(req.getGames(), new TypeToken<List<Game>>() {
+        }.getType());
+
+        // 不正なデータをフィルタリング
+        games = torelantFilter(games);
+
+        // ModelMapperが勝手にIdを設定してしまうのでnullに再設定
+        for (Game game : games) {
+            game.setId(null);
+        }
+
+        List<Game> createdGames;
+
+        try {
+            createdGames = gameRepository.saveAll(games);
+        } catch (Exception e) {
+            throw new Exception("試合情報を保存できませんでした。");
+        }
+
+        List<CreateGamesTorelantResponse> res = modelMapper.map(createdGames,
+                new TypeToken<List<CreateGamesTorelantResponse>>() {
+                }.getType());
+
+        return res;
+    }
+
+    private List<Game> torelantFilter(List<Game> games) {
         List<Game> filteredGames = new ArrayList<Game>();
 
         for (Game game : games) {
