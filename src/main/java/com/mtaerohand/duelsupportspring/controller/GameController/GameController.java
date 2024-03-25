@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mtaerohand.duelsupportspring.controller.GameController.CreateGamesRequest.CreateGamesRequest;
 import com.mtaerohand.duelsupportspring.controller.GameController.CreateGamesTorelantRequest.CreateGamesTorelantRequest;
+import com.mtaerohand.duelsupportspring.controller.GameController.GetDeckDistributionsResponse.GetDeckDistributionsResponse;
 import com.mtaerohand.duelsupportspring.service.GameService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
 
 /**
  * 試合情報コントローラ
@@ -51,4 +53,17 @@ public class GameController {
         List<CreateGamesTorelantResponse> res = gameService.createGamesTorelant(req);
         return ResponseEntity.ok(res);
     }
+
+    /**
+     * デッキ分布一覧情報の取得
+     * 
+     * @param req デッキ分布一覧情報の取得リクエスト
+     * @return デッキ分布一覧情報の取得レスポンス
+     */
+    @GetMapping("deck-distributions")
+    public ResponseEntity<GetDeckDistributionsResponse> getDeckDistributions(@Valid GetDeckDistributionsRequest req) {
+        GetDeckDistributionsResponse res = gameService.getDeckDistributions(req);
+        return ResponseEntity.ok(res);
+    }
+
 }

@@ -5,13 +5,18 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mtaerohand.duelsupportspring.controller.GameController.CreateGamesResponse;
 import com.mtaerohand.duelsupportspring.controller.GameController.CreateGamesTorelantResponse;
+import com.mtaerohand.duelsupportspring.controller.GameController.GetDeckDistributionsRequest;
 import com.mtaerohand.duelsupportspring.controller.GameController.CreateGamesRequest.CreateGamesRequest;
 import com.mtaerohand.duelsupportspring.controller.GameController.CreateGamesTorelantRequest.CreateGamesTorelantRequest;
+import com.mtaerohand.duelsupportspring.controller.GameController.GetDeckDistributionsResponse.GetDeckDistributionsResponse;
+import com.mtaerohand.duelsupportspring.repository.GameRepository.DeckDistribution;
 import com.mtaerohand.duelsupportspring.repository.GameRepository.Game;
 import com.mtaerohand.duelsupportspring.repository.GameRepository.GameRepository;
 
@@ -90,6 +95,30 @@ public class GameService {
         return res;
     }
 
+    public GetDeckDistributionsResponse getDeckDistributions(GetDeckDistributionsRequest req) {
+        List<DeckDistribution> deckDistributions = gameRepository.getDeckDistributions(req.getModeId(),
+                req.getModeDetailId(), PageRequest.of(0, req.getLimit(), Sort.by(Sort.Direction.DESC, "ratio")));
+
+        List<com.mtaerohand.duelsupportspring.controller.GameController.GetDeckDistributionsResponse.DeckDistribution> resDeckDistributions = modelMapper
+                .map(deckDistributions,
+                        new TypeToken<List<com.mtaerohand.duelsupportspring.controller.GameController.GetDeckDistributionsResponse.DeckDistribution>>() {
+                        }.getType());
+
+        GetDeckDistributionsResponse res = new GetDeckDistributionsResponse();
+
+        res.setModeId(req.getModeId());
+        res.setModeDetailId(req.getModeDetailId());
+        res.setDeckDistributions(resDeckDistributions);
+
+        return res;
+    }
+
+    /**
+     * 寛容デッキデータ保存用のフィルタ
+     * 
+     * @param games
+     * @return
+     */
     private List<Game> torelantFilter(List<Game> games) {
         List<Game> filteredGames = new ArrayList<Game>();
 
