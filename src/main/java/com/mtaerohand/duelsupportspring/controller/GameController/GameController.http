@@ -57,6 +57,6 @@ Content-Type: application/json
 ]}
 
 ### デッキ分布一覧情報の取得
-@modeId = 1
-@modeDetailId = 1
-GET {{baseURL}}/deck-distributions?modeId={{modeId}}&modeDetailId={{modeDetailId}} HTTP/1.1
+@modeId = 3
+@modeDetailId = 16
+GET {{baseURL}}/deck-distributions?modeId={{modeId}}&modeDetailId={{modeDetailId}}&limit=10 HTTP/1.1
