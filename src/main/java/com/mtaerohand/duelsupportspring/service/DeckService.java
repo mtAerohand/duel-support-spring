@@ -7,12 +7,14 @@ import org.modelmapper.TypeToken;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.mtaerohand.duelsupportspring.controller.DeckController.GetDeckResponse;
 import com.mtaerohand.duelsupportspring.controller.DeckController.GetDecksResponse;
 import com.mtaerohand.duelsupportspring.repository.DeckRepository.Deck;
 import com.mtaerohand.duelsupportspring.repository.DeckRepository.DeckRepository;
 
 import lombok.RequiredArgsConstructor;
 
+// TODO: Transactionalつけたい
 /**
  * デッキ情報サービス
  */
@@ -34,6 +36,20 @@ public class DeckService {
         List<GetDecksResponse> res = modelMapper.map(decks, new TypeToken<List<GetDecksResponse>>() {
         }.getType());
 
+        return res;
+    }
+
+    /**
+     * デッキ情報の取得
+     * 
+     * @param id デッキID
+     * @return デッキ情報
+     */
+    public GetDeckResponse getDeck(Integer id) {
+        @SuppressWarnings("null")
+        // TODO: エラーメッセージまとめる
+        Deck deck = deckRepository.findById(id).orElseThrow(() -> new RuntimeException("指定されたIDのデッキが存在しません。"));
+        GetDeckResponse res = modelMapper.map(deck, GetDeckResponse.class);
         return res;
     }
 }

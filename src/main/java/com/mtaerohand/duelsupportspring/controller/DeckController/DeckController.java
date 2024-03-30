@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,6 +30,18 @@ public class DeckController {
     @GetMapping("decks")
     public ResponseEntity<List<GetDecksResponse>> getDecks() {
         List<GetDecksResponse> res = deckService.getDecks();
+        return ResponseEntity.ok(res);
+    }
+
+    /**
+     * デッキ情報の取得
+     * 
+     * @param id デッキID
+     * @return デッキ情報の取得レスポンス
+     */
+    @GetMapping("decks/{id}")
+    public ResponseEntity<GetDeckResponse> getDecks(@PathVariable Integer id) {
+        GetDeckResponse res = deckService.getDeck(id);
         return ResponseEntity.ok(res);
     }
 }

@@ -1,7 +1,8 @@
 # デッキ情報コントローラ
-
 @baseURL = http://localhost:8080/api/v1
 
 ### デッキ一覧情報の取得
-
 GET {{baseURL}}/decks HTTP/1.1
+
+### デッキ情報の取得
+GET {{baseURL}}/decks/1 HTTP/1.1
