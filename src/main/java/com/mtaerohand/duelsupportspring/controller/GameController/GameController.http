@@ -10,7 +10,7 @@ Content-Type: application/json
     "userId": "sample",
     "games": [
     {
-        "modeId": "10",
+        "modeId": "1",
         "modeDetailId": "1",
         "datetime": "2000-01-01T00:00:00",
         "myDeckId": "1",
@@ -49,7 +49,7 @@ Content-Type: application/json
         "remarks": "hoge"
     },
     {
-        "modeId": "10",
+        "modeId": "1",
         "modeDetailId": "1",
         "datetime": "2000-01-01T00:00:00",
         "myDeckId": "1",
