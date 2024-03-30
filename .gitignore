@@ -1,3 +1,7 @@
+### Custom ###
+*.http
+*.jar
+
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
@@ -31,7 +35,3 @@ build/
 
 ### VS Code ###
 .vscode/
-
-### Custom ###
-*.http
-*.jar
