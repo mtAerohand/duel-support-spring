@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * 一般情報コントローラ
@@ -15,6 +14,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("api/v1")
 @RequiredArgsConstructor
 public class MainController {
+    /**
+     * ルート
+     * 
+     * @return
+     */
     @GetMapping()
     public ResponseEntity<String> root() {
         return ResponseEntity.ok("Duel-Support API");

@@ -19,6 +19,8 @@ import com.mtaerohand.duelsupportspring.controller.GameController.GetDeckDistrib
 import com.mtaerohand.duelsupportspring.repository.GameRepository.DeckDistribution;
 import com.mtaerohand.duelsupportspring.repository.GameRepository.Game;
 import com.mtaerohand.duelsupportspring.repository.GameRepository.GameRepository;
+import com.mtaerohand.duelsupportspring.repository.UserRepository.User;
+import com.mtaerohand.duelsupportspring.repository.UserRepository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,6 +32,8 @@ import lombok.RequiredArgsConstructor;
 public class GameService {
 
     private final GameRepository gameRepository;
+
+    private final UserRepository userRepository;
 
     private final ModelMapper modelMapper;
 
@@ -43,9 +47,20 @@ public class GameService {
         List<Game> games = modelMapper.map(req.getGames(), new TypeToken<List<Game>>() {
         }.getType());
 
+        String userId = req.getUserId() == null ? "" : req.getUserId().trim();
+
         // ModelMapperが勝手にIdを設定してしまうのでnullに再設定
+        // またユーザIDを設定
         for (Game game : games) {
             game.setId(null);
+            game.setUserId(userId);
+        }
+
+        // ユーザテーブルに存在しない場合追加する
+        if (!userId.isEmpty() && !userRepository.existsById(userId)) {
+            User user = new User();
+            user.setId(userId);
+            userRepository.save(user);
         }
 
         List<Game> createdGames;
@@ -72,12 +87,22 @@ public class GameService {
         List<Game> games = modelMapper.map(req.getGames(), new TypeToken<List<Game>>() {
         }.getType());
 
+        String userId = req.getUserId() == null ? "" : req.getUserId().trim();
+
         // 不正なデータをフィルタリング
         games = torelantFilter(games);
 
         // ModelMapperが勝手にIdを設定してしまうのでnullに再設定
         for (Game game : games) {
             game.setId(null);
+            game.setUserId(userId);
+        }
+
+        // userIdがユーザテーブルに存在しない場合追加する
+        if (!userId.isEmpty() && !userRepository.existsById(userId)) {
+            User user = new User();
+            user.setId(userId);
+            userRepository.save(user);
         }
 
         List<Game> createdGames;

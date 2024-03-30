@@ -10,6 +10,7 @@ import lombok.Data;
 @Data
 public class CreateGamesResponse {
     private Integer id;
+    private String userId;
     private Integer modeId;
     private Integer modeDetailId;
     private LocalDateTime datetime;

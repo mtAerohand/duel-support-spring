@@ -9,5 +9,7 @@ import lombok.Data;
  */
 @Data
 public class CreateGamesTorelantRequest {
+    private String userId;
+
     private List<Game> games;
 }

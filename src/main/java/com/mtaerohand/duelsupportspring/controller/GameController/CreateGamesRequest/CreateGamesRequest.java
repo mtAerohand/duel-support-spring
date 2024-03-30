@@ -10,6 +10,8 @@ import lombok.Data;
  */
 @Data
 public class CreateGamesRequest {
+    private String userId;
+
     @Valid
     private List<Game> games;
 }
