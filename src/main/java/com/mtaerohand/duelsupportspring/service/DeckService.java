@@ -8,7 +8,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.mtaerohand.duelsupportspring.controller.DeckController.GetDeckResponse;
-import com.mtaerohand.duelsupportspring.controller.DeckController.GetDecksResponse;
+import com.mtaerohand.duelsupportspring.controller.DeckController.GetDecksResponse.GetDecksResponse;
+import com.mtaerohand.duelsupportspring.controller.DeckController.GetDecksResponse.GetDecksResponseDeck;
 import com.mtaerohand.duelsupportspring.repository.DeckRepository.Deck;
 import com.mtaerohand.duelsupportspring.repository.DeckRepository.DeckRepository;
 
@@ -30,12 +31,14 @@ public class DeckService {
      * 
      * @return デッキ一覧情報
      */
-    public List<GetDecksResponse> getDecks() {
+    public GetDecksResponse getDecks() {
         List<Deck> decks = deckRepository.findAll(Sort.by(Sort.Direction.ASC, "pronounce"));
 
-        List<GetDecksResponse> res = modelMapper.map(decks, new TypeToken<List<GetDecksResponse>>() {
+        List<GetDecksResponseDeck> resDecks = modelMapper.map(decks, new TypeToken<List<GetDecksResponseDeck>>() {
         }.getType());
 
+        GetDecksResponse res = new GetDecksResponse();
+        res.setDecks(resDecks);
         return res;
     }
 

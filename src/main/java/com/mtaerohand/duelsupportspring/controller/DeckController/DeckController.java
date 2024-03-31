@@ -1,13 +1,12 @@
 package com.mtaerohand.duelsupportspring.controller.DeckController;
 
-import java.util.List;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mtaerohand.duelsupportspring.controller.DeckController.GetDecksResponse.GetDecksResponse;
 import com.mtaerohand.duelsupportspring.service.DeckService;
 
 import lombok.RequiredArgsConstructor;
@@ -28,8 +27,8 @@ public class DeckController {
      * @return デッキ一覧情報の取得レスポンス
      */
     @GetMapping("decks")
-    public ResponseEntity<List<GetDecksResponse>> getDecks() {
-        List<GetDecksResponse> res = deckService.getDecks();
+    public ResponseEntity<GetDecksResponse> getDecks() {
+        GetDecksResponse res = deckService.getDecks();
         return ResponseEntity.ok(res);
     }
 
