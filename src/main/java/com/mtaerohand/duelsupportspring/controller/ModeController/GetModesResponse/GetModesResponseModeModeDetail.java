@@ -5,10 +5,10 @@ import java.time.LocalDateTime;
 import lombok.Data;
 
 /**
- * モード一覧の取得レスポンス/モード詳細
+ * モード一覧の取得レスポンス/Mode/ModeDetail
  */
 @Data
-public class ModeDetail {
+public class GetModesResponseModeModeDetail {
     private Integer id;
     private String name;
     private LocalDateTime startDatetime;

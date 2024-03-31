@@ -1,7 +1,5 @@
 package com.mtaerohand.duelsupportspring.controller.ModeController;
 
-import java.util.List;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,8 +26,8 @@ public class ModeController {
      * @return モード一覧情報の取得レスポンス
      */
     @GetMapping("modes")
-    public ResponseEntity<List<GetModesResponse>> getModes(GetModesRequest req) {
-        List<GetModesResponse> res = modeService.getModes(req);
+    public ResponseEntity<GetModesResponse> getModes(GetModesRequest req) {
+        GetModesResponse res = modeService.getModes(req);
         return ResponseEntity.ok(res);
     }
 }

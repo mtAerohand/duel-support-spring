@@ -9,10 +9,5 @@ import lombok.Data;
  */
 @Data
 public class GetModesResponse {
-    private Integer id;
-    private String name;
-    private String pronounce;
-    private Boolean isPermanent;
-    private String remarks;
-    private List<ModeDetail> modeDetails;
+    private List<GetModesResponseMode> modes;
 }

@@ -6,10 +6,12 @@ import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.mtaerohand.duelsupportspring.controller.ModeController.GetModesRequest;
 import com.mtaerohand.duelsupportspring.controller.ModeController.GetModesResponse.GetModesResponse;
+import com.mtaerohand.duelsupportspring.controller.ModeController.GetModesResponse.GetModesResponseMode;
 import com.mtaerohand.duelsupportspring.repository.ModeDetailRepository.ModeDetail;
 import com.mtaerohand.duelsupportspring.repository.ModeDetailRepository.ModeDetailRepository;
 import com.mtaerohand.duelsupportspring.repository.ModeDetailRepository.ModeDetailSpecifications;
@@ -38,12 +40,14 @@ public class ModeService {
      * @param req モード一覧情報の取得リクエスト
      * @return モード一覧情報の取得レスポンス
      */
-    public List<GetModesResponse> getModes(GetModesRequest req) {
+    public GetModesResponse getModes(GetModesRequest req) {
         List<Mode> modes = new ArrayList<>();
         if (req.getIsOngoing()) {
             // 現在有効なモード一覧情報を取得する
-            @SuppressWarnings("null")
-            List<ModeDetail> ongoingModeDetails = modeDetailRepository.findAll(modeDetailSpecifications.isOngoing());
+            Specification<ModeDetail> spec = modeDetailSpecifications.isOngoing();
+            List<ModeDetail> ongoingModeDetails = spec == null
+                    ? modeDetailRepository.findAll()
+                    : modeDetailRepository.findAll(spec);
 
             for (ModeDetail modeDetail : ongoingModeDetails) {
                 Mode ongoingMode = modeDetail.getMode();
@@ -58,9 +62,10 @@ public class ModeService {
             modes = modeRepository.findAll(Sort.by(Sort.Direction.DESC, "isPermanent"));
         }
 
-        List<GetModesResponse> res = modelMapper.map(modes, new TypeToken<List<GetModesResponse>>() {
+        List<GetModesResponseMode> resModes = modelMapper.map(modes, new TypeToken<List<GetModesResponseMode>>() {
         }.getType());
-
+        GetModesResponse res = new GetModesResponse();
+        res.setModes(resModes);
         return res;
     }
 }
