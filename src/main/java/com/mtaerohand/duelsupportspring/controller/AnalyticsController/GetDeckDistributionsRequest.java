@@ -1,4 +1,4 @@
-package com.mtaerohand.duelsupportspring.controller.GameController;
+package com.mtaerohand.duelsupportspring.controller.AnalyticsController;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -14,5 +14,5 @@ public class GetDeckDistributionsRequest {
     @NotNull(message = "モード詳細IDが空です。")
     private Integer modeDetailId;
 
-    private Integer limit = 5;
+    private Integer limit = 8;
 }

@@ -5,20 +5,15 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mtaerohand.duelsupportspring.controller.GameController.GetDeckDistributionsRequest;
 import com.mtaerohand.duelsupportspring.controller.GameController.CreateGamesRequest.CreateGamesRequest;
 import com.mtaerohand.duelsupportspring.controller.GameController.CreateGamesResponse.CreateGamesResponse;
 import com.mtaerohand.duelsupportspring.controller.GameController.CreateGamesResponse.CreateGamesResponseGame;
 import com.mtaerohand.duelsupportspring.controller.GameController.CreateGamesTorelantRequest.CreateGamesTorelantRequest;
 import com.mtaerohand.duelsupportspring.controller.GameController.CreateGamesTorelantResponse.CreateGamesTorelantResponse;
 import com.mtaerohand.duelsupportspring.controller.GameController.CreateGamesTorelantResponse.CreateGamesTorelantResponseGame;
-import com.mtaerohand.duelsupportspring.controller.GameController.GetDeckDistributionsResponse.GetDeckDistributionsResponse;
-import com.mtaerohand.duelsupportspring.repository.GameRepository.DeckDistribution;
 import com.mtaerohand.duelsupportspring.repository.GameRepository.Game;
 import com.mtaerohand.duelsupportspring.repository.GameRepository.GameRepository;
 import com.mtaerohand.duelsupportspring.repository.UserRepository.User;
@@ -28,6 +23,9 @@ import lombok.RequiredArgsConstructor;
 
 // TODO: Transactional周りを整理する
 // TODO: エラーメッセージを外部ファイルにまとめたい
+/**
+ * 試合情報サービス
+ */
 @Service
 @RequiredArgsConstructor
 @Transactional(rollbackFor = Throwable.class)
@@ -116,24 +114,6 @@ public class GameService {
                 }.getType());
         CreateGamesTorelantResponse res = new CreateGamesTorelantResponse();
         res.setGames(resGames);
-        return res;
-    }
-
-    public GetDeckDistributionsResponse getDeckDistributions(GetDeckDistributionsRequest req) {
-        List<DeckDistribution> deckDistributions = gameRepository.getDeckDistributions(req.getModeId(),
-                req.getModeDetailId(), PageRequest.of(0, req.getLimit(), Sort.by(Sort.Direction.DESC, "ratio")));
-
-        List<com.mtaerohand.duelsupportspring.controller.GameController.GetDeckDistributionsResponse.DeckDistribution> resDeckDistributions = modelMapper
-                .map(deckDistributions,
-                        new TypeToken<List<com.mtaerohand.duelsupportspring.controller.GameController.GetDeckDistributionsResponse.DeckDistribution>>() {
-                        }.getType());
-
-        GetDeckDistributionsResponse res = new GetDeckDistributionsResponse();
-
-        res.setModeId(req.getModeId());
-        res.setModeDetailId(req.getModeDetailId());
-        res.setDeckDistributions(resDeckDistributions);
-
         return res;
     }
 

@@ -1,4 +1,4 @@
-package com.mtaerohand.duelsupportspring.controller.GameController.GetDeckDistributionsResponse;
+package com.mtaerohand.duelsupportspring.controller.AnalyticsController.GetDeckDistributionsResponse;
 
 import java.util.List;
 
@@ -11,5 +11,5 @@ import lombok.Data;
 public class GetDeckDistributionsResponse {
     private Integer modeId;
     private Integer modeDetailId;
-    private List<DeckDistribution> deckDistributions;
+    private List<GetDeckDistributionsResponseDeckDistribution> deckDistributions;
 }
