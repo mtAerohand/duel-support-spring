@@ -1,14 +1,14 @@
-package com.mtaerohand.duelsupportspring.controller.GameController;
+package com.mtaerohand.duelsupportspring.controller.GameController.CreateGamesTorelantResponse;
 
 import java.time.LocalDateTime;
 
 import lombok.Data;
 
 /**
- * 試合情報の一括作成(寛容)レスポンス
+ * 試合情報の一括作成(寛容)レスポンス/Game
  */
 @Data
-public class CreateGamesTorelantResponse {
+public class CreateGamesTorelantResponseGame {
     private Integer id;
     private String userId;
     private Integer modeId;

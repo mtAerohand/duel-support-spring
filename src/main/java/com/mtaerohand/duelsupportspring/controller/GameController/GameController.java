@@ -1,7 +1,5 @@
 package com.mtaerohand.duelsupportspring.controller.GameController;
 
-import java.util.List;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mtaerohand.duelsupportspring.controller.GameController.CreateGamesRequest.CreateGamesRequest;
 import com.mtaerohand.duelsupportspring.controller.GameController.CreateGamesResponse.CreateGamesResponse;
 import com.mtaerohand.duelsupportspring.controller.GameController.CreateGamesTorelantRequest.CreateGamesTorelantRequest;
+import com.mtaerohand.duelsupportspring.controller.GameController.CreateGamesTorelantResponse.CreateGamesTorelantResponse;
 import com.mtaerohand.duelsupportspring.controller.GameController.GetDeckDistributionsResponse.GetDeckDistributionsResponse;
 import com.mtaerohand.duelsupportspring.service.GameService;
 
@@ -36,8 +35,7 @@ public class GameController {
      * @return 試合情報の一括作成レスポンス
      */
     @PostMapping("games")
-    public ResponseEntity<CreateGamesResponse> createGames(@Valid @RequestBody CreateGamesRequest req)
-            throws Exception {
+    public ResponseEntity<CreateGamesResponse> createGames(@Valid @RequestBody CreateGamesRequest req) {
         CreateGamesResponse res = gameService.createGames(req);
         return ResponseEntity.ok(res);
     }
@@ -49,9 +47,9 @@ public class GameController {
      * @return 試合情報の一括作成(寛容)レスポンス
      */
     @PostMapping("games/torelant")
-    public ResponseEntity<List<CreateGamesTorelantResponse>> createGamesTorelant(
-            @RequestBody CreateGamesTorelantRequest req) throws Exception {
-        List<CreateGamesTorelantResponse> res = gameService.createGamesTorelant(req);
+    public ResponseEntity<CreateGamesTorelantResponse> createGamesTorelant(
+            @RequestBody CreateGamesTorelantRequest req) {
+        CreateGamesTorelantResponse res = gameService.createGamesTorelant(req);
         return ResponseEntity.ok(res);
     }
 

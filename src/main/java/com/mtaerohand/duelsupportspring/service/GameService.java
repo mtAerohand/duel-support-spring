@@ -10,12 +10,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mtaerohand.duelsupportspring.controller.GameController.CreateGamesTorelantResponse;
 import com.mtaerohand.duelsupportspring.controller.GameController.GetDeckDistributionsRequest;
 import com.mtaerohand.duelsupportspring.controller.GameController.CreateGamesRequest.CreateGamesRequest;
 import com.mtaerohand.duelsupportspring.controller.GameController.CreateGamesResponse.CreateGamesResponse;
 import com.mtaerohand.duelsupportspring.controller.GameController.CreateGamesResponse.CreateGamesResponseGame;
 import com.mtaerohand.duelsupportspring.controller.GameController.CreateGamesTorelantRequest.CreateGamesTorelantRequest;
+import com.mtaerohand.duelsupportspring.controller.GameController.CreateGamesTorelantResponse.CreateGamesTorelantResponse;
+import com.mtaerohand.duelsupportspring.controller.GameController.CreateGamesTorelantResponse.CreateGamesTorelantResponseGame;
 import com.mtaerohand.duelsupportspring.controller.GameController.GetDeckDistributionsResponse.GetDeckDistributionsResponse;
 import com.mtaerohand.duelsupportspring.repository.GameRepository.DeckDistribution;
 import com.mtaerohand.duelsupportspring.repository.GameRepository.Game;
@@ -83,9 +84,12 @@ public class GameService {
      * @param req 試合情報の一括作成(寛容)リクエスト
      */
     @SuppressWarnings("null")
-    public List<CreateGamesTorelantResponse> createGamesTorelant(CreateGamesTorelantRequest req) throws Exception {
+    public CreateGamesTorelantResponse createGamesTorelant(CreateGamesTorelantRequest req) {
         List<Game> games = modelMapper.map(req.getGames(), new TypeToken<List<Game>>() {
         }.getType());
+        if (games == null) {
+            games = new ArrayList<Game>();
+        }
 
         String userId = req.getUserId() == null ? "" : req.getUserId().trim();
 
@@ -105,18 +109,13 @@ public class GameService {
             userRepository.save(user);
         }
 
-        List<Game> createdGames;
+        List<Game> createdGames = gameRepository.saveAll(games);
 
-        try {
-            createdGames = gameRepository.saveAll(games);
-        } catch (Exception e) {
-            throw new Exception("試合情報を保存できませんでした。");
-        }
-
-        List<CreateGamesTorelantResponse> res = modelMapper.map(createdGames,
-                new TypeToken<List<CreateGamesTorelantResponse>>() {
+        List<CreateGamesTorelantResponseGame> resGames = modelMapper.map(createdGames,
+                new TypeToken<List<CreateGamesTorelantResponseGame>>() {
                 }.getType());
-
+        CreateGamesTorelantResponse res = new CreateGamesTorelantResponse();
+        res.setGames(resGames);
         return res;
     }
 
