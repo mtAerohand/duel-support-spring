@@ -1,5 +1,7 @@
 package com.mtaerohand.duelsupportspring.controller.AnalyticsController;
 
+import java.time.LocalDateTime;
+
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -13,6 +15,10 @@ public class GetDeckDistributionsRequest {
 
     @NotNull(message = "モード詳細IDが空です。")
     private Integer modeDetailId;
+
+    private LocalDateTime datetimeFrom;
+
+    private LocalDateTime datetimeTo;
 
     private Integer limit = 8;
 }
