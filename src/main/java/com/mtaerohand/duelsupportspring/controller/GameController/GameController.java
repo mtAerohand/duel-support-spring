@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mtaerohand.duelsupportspring.controller.GameController.CreateGamesRequest.CreateGamesRequest;
+import com.mtaerohand.duelsupportspring.controller.GameController.CreateGamesResponse.CreateGamesResponse;
 import com.mtaerohand.duelsupportspring.controller.GameController.CreateGamesTorelantRequest.CreateGamesTorelantRequest;
 import com.mtaerohand.duelsupportspring.controller.GameController.GetDeckDistributionsResponse.GetDeckDistributionsResponse;
 import com.mtaerohand.duelsupportspring.service.GameService;
@@ -35,9 +36,9 @@ public class GameController {
      * @return 試合情報の一括作成レスポンス
      */
     @PostMapping("games")
-    public ResponseEntity<List<CreateGamesResponse>> createGames(@Valid @RequestBody CreateGamesRequest req)
+    public ResponseEntity<CreateGamesResponse> createGames(@Valid @RequestBody CreateGamesRequest req)
             throws Exception {
-        List<CreateGamesResponse> res = gameService.createGames(req);
+        CreateGamesResponse res = gameService.createGames(req);
         return ResponseEntity.ok(res);
     }
 

@@ -10,10 +10,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mtaerohand.duelsupportspring.controller.GameController.CreateGamesResponse;
 import com.mtaerohand.duelsupportspring.controller.GameController.CreateGamesTorelantResponse;
 import com.mtaerohand.duelsupportspring.controller.GameController.GetDeckDistributionsRequest;
 import com.mtaerohand.duelsupportspring.controller.GameController.CreateGamesRequest.CreateGamesRequest;
+import com.mtaerohand.duelsupportspring.controller.GameController.CreateGamesResponse.CreateGamesResponse;
+import com.mtaerohand.duelsupportspring.controller.GameController.CreateGamesResponse.CreateGamesResponseGame;
 import com.mtaerohand.duelsupportspring.controller.GameController.CreateGamesTorelantRequest.CreateGamesTorelantRequest;
 import com.mtaerohand.duelsupportspring.controller.GameController.GetDeckDistributionsResponse.GetDeckDistributionsResponse;
 import com.mtaerohand.duelsupportspring.repository.GameRepository.DeckDistribution;
@@ -42,10 +43,12 @@ public class GameService {
      * 
      * @param req 試合情報の一括作成リクエスト
      */
-    @SuppressWarnings("null")
-    public List<CreateGamesResponse> createGames(CreateGamesRequest req) throws Exception {
+    public CreateGamesResponse createGames(CreateGamesRequest req) {
         List<Game> games = modelMapper.map(req.getGames(), new TypeToken<List<Game>>() {
         }.getType());
+        if (games == null) {
+            games = new ArrayList<Game>();
+        }
 
         String userId = req.getUserId() == null ? "" : req.getUserId().trim();
 
@@ -63,16 +66,13 @@ public class GameService {
             userRepository.save(user);
         }
 
-        List<Game> createdGames;
+        List<Game> createdGames = gameRepository.saveAll(games);
 
-        try {
-            createdGames = gameRepository.saveAll(games);
-        } catch (Exception e) {
-            throw new Exception("試合情報を保存できませんでした。");
-        }
-
-        List<CreateGamesResponse> res = modelMapper.map(createdGames, new TypeToken<List<CreateGamesResponse>>() {
-        }.getType());
+        List<CreateGamesResponseGame> resGames = modelMapper.map(createdGames,
+                new TypeToken<List<CreateGamesResponseGame>>() {
+                }.getType());
+        CreateGamesResponse res = new CreateGamesResponse();
+        res.setGames(resGames);
 
         return res;
     }
