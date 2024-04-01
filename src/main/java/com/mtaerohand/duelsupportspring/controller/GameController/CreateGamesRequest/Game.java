@@ -6,13 +6,13 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Value;
+import lombok.Data;
 
 /**
  * 試合情報の一括作成リクエスト/試合
  */
 // TODO: バリデーションエラーのメッセージを後でまとめる
-@Value
+@Data
 public class Game {
     @NotNull(message = "モードIDが空です。")
     private Integer modeId;

@@ -12,5 +12,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class DeckDistribution implements Serializable {
     private Integer deckId;
-    private float ratio;
+    private Float ratio;
 }

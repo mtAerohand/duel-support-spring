@@ -8,5 +8,5 @@ import lombok.Data;
 @Data
 public class GetDeckDistributionsResponseDeckDistribution {
     private Integer deckId;
-    private float ratio;
+    private Float ratio;
 }

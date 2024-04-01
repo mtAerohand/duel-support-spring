@@ -9,7 +9,5 @@ import lombok.Data;
  */
 @Data
 public class GetDeckDistributionsResponse {
-    private Integer modeId;
-    private Integer modeDetailId;
     private List<GetDeckDistributionsResponseDeckDistribution> deckDistributions;
 }

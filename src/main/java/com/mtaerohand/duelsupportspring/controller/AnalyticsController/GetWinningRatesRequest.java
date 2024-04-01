@@ -6,11 +6,11 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 /**
- * デッキ分布一覧情報の取得リクエスト
+ * 上位デッキの対面勝率一覧情報の取得リクエスト
  */
 // TODO: エラーメッセージまとめる
 @Data
-public class GetDeckDistributionsRequest {
+public class GetWinningRatesRequest {
     @NotNull(message = "モードIDが空です。")
     private Integer modeId;
 
