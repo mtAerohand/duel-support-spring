@@ -8,6 +8,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.mtaerohand.duelsupportspring.controller.DeckController.GetDeckResponse;
+import com.mtaerohand.duelsupportspring.controller.DeckController.CreateDecksRequest.CreateDecksRequest;
+import com.mtaerohand.duelsupportspring.controller.DeckController.CreateDecksResponse.CreateDecksResponse;
+import com.mtaerohand.duelsupportspring.controller.DeckController.CreateDecksResponse.CreateDecksResponseDeck;
 import com.mtaerohand.duelsupportspring.controller.DeckController.GetDecksResponse.GetDecksResponse;
 import com.mtaerohand.duelsupportspring.controller.DeckController.GetDecksResponse.GetDecksResponseDeck;
 import com.mtaerohand.duelsupportspring.repository.DeckRepository.Deck;
@@ -49,10 +52,39 @@ public class DeckService {
      * @return デッキ情報
      */
     public GetDeckResponse getDeck(Integer id) {
-        @SuppressWarnings("null")
-        // TODO: エラーメッセージまとめる
-        Deck deck = deckRepository.findById(id).orElseThrow(() -> new RuntimeException("指定されたIDのデッキが存在しません。"));
-        GetDeckResponse res = modelMapper.map(deck, GetDeckResponse.class);
+        GetDeckResponse res = new GetDeckResponse();
+        if (id == null) {
+            return res;
+        } else {
+            // TODO: エラーメッセージまとめる
+            Deck deck = deckRepository.findById(id).orElseThrow(() -> new RuntimeException("指定されたIDのデッキが存在しません。"));
+            res = modelMapper.map(deck, GetDeckResponse.class);
+            return res;
+        }
+    }
+
+    /**
+     * デッキ情報の一括作成
+     * 
+     * @param req デッキ情報の一括作成リクエスト
+     * @return デッキ情報の一括作成レスポンス
+     */
+    public CreateDecksResponse createDecks(CreateDecksRequest req) {
+        List<Deck> decksForCreate = modelMapper.map(req.getDecks(), new TypeToken<List<Deck>>() {
+        }.getType());
+        // nullチェック
+        if (decksForCreate == null) {
+            return new CreateDecksResponse();
+        }
+        // リクエストデータをデッキテーブルの保存
+        List<Deck> decksCreated = deckRepository.saveAll(decksForCreate);
+
+        // レスポンスデータを生成し返却
+        List<CreateDecksResponseDeck> resDecks = modelMapper.map(decksCreated,
+                new TypeToken<List<CreateDecksResponseDeck>>() {
+                }.getType());
+        CreateDecksResponse res = new CreateDecksResponse();
+        res.setDecks(resDecks);
         return res;
     }
 }
