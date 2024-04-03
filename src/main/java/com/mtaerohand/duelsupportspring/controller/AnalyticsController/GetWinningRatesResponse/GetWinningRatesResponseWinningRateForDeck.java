@@ -9,4 +9,6 @@ import lombok.Data;
 public class GetWinningRatesResponseWinningRateForDeck {
     private Integer deckId;
     private Float winningRate;
+    private Integer winCount;
+    private Integer loseCount;
 }

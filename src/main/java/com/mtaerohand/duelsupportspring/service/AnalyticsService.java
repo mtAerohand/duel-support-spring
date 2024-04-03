@@ -19,6 +19,7 @@ import com.mtaerohand.duelsupportspring.controller.AnalyticsController.GetWinnin
 import com.mtaerohand.duelsupportspring.controller.AnalyticsController.GetWinningRatesResponse.GetWinningRatesResponseWinningRateForDeck;
 import com.mtaerohand.duelsupportspring.repository.GameRepository.DeckDistribution;
 import com.mtaerohand.duelsupportspring.repository.GameRepository.GameRepository;
+import com.mtaerohand.duelsupportspring.repository.GameRepository.WinningRateForDeck;
 
 import lombok.RequiredArgsConstructor;
 
@@ -97,12 +98,11 @@ public class AnalyticsService {
             List<GetWinningRatesResponseWinningRateForDeck> winningRateForDecks = new ArrayList<GetWinningRatesResponseWinningRateForDeck>();
             for (int j = 0; j < deckDistributions.size(); j++) {
                 Integer opDeckId = deckDistributions.get(j).getDeckId();
-                GetWinningRatesResponseWinningRateForDeck winningRateForDeck = new GetWinningRatesResponseWinningRateForDeck();
-                winningRateForDeck.setDeckId(opDeckId);
-                Float winningRateValue = 0f;
+                GetWinningRatesResponseWinningRateForDeck resWinningRateForDeck = new GetWinningRatesResponseWinningRateForDeck();
+                WinningRateForDeck winningRateForDeck = new WinningRateForDeck();
                 if (req.getDatetimeFrom() == null && req.getDatetimeTo() == null) {
                     // 時間指定なし
-                    winningRateValue = gameRepository.getWinningRateByDeckIds(req.getModeId(),
+                    winningRateForDeck = gameRepository.getWinningRateByDeckIds(req.getModeId(),
                             req.getModeDetailId(), myDeckId, opDeckId);
                 } else {
                     // 時間指定あり
@@ -110,11 +110,13 @@ public class AnalyticsService {
                             : req.getDatetimeFrom();
                     LocalDateTime datetimeTo = req.getDatetimeTo() == null ? LocalDateTime.now()
                             : req.getDatetimeTo();
-                    winningRateValue = gameRepository.getWinningRateByDeckIdsByDatetime(req.getModeId(),
+                    winningRateForDeck = gameRepository.getWinningRateByDeckIdsByDatetime(req.getModeId(),
                             req.getModeDetailId(), myDeckId, opDeckId, datetimeFrom, datetimeTo);
                 }
-                winningRateForDeck.setWinningRate(winningRateValue);
-                winningRateForDecks.add(winningRateForDeck);
+                resWinningRateForDeck = modelMapper.map(winningRateForDeck,
+                        GetWinningRatesResponseWinningRateForDeck.class);
+                resWinningRateForDeck.setDeckId(opDeckId);
+                winningRateForDecks.add(resWinningRateForDeck);
             }
             winningRate.setDeckId(myDeckId);
             winningRate.setWinningRateForDecks(winningRateForDecks);
