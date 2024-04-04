@@ -10,12 +10,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mtaerohand.duelsupportspring.controller.DeckController.CreateDecksRequest.CreateDecksRequest;
 import com.mtaerohand.duelsupportspring.controller.DeckController.CreateDecksResponse.CreateDecksResponse;
 import com.mtaerohand.duelsupportspring.controller.DeckController.GetDecksResponse.GetDecksResponse;
+import com.mtaerohand.duelsupportspring.controller.DeckController.UpdateDecksRequest.UpdateDecksRequest;
+import com.mtaerohand.duelsupportspring.controller.DeckController.UpdateDecksResponse.UpdateDecksResponse;
 import com.mtaerohand.duelsupportspring.service.DeckService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
 
 /**
  * デッキ情報コントローラ
@@ -64,4 +67,15 @@ public class DeckController {
         return ResponseEntity.ok(res);
     }
 
+    /**
+     * デッキ情報の一括更新
+     * 
+     * @param req デッキ情報の一括更新リクエスト
+     * @return デッキ情報の一括更新レスポンス
+     */
+    @PutMapping("decks")
+    public ResponseEntity<UpdateDecksResponse> updateDecks(@Valid @RequestBody UpdateDecksRequest req) {
+        UpdateDecksResponse res = deckService.updateDecks(req);
+        return ResponseEntity.ok(res);
+    }
 }
