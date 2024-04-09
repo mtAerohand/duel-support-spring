@@ -7,45 +7,45 @@ GET {{baseURL}}/decks HTTP/1.1
 ### デッキ情報の取得
 GET {{baseURL}}/decks/1 HTTP/1.1
 
-### デッキ情報の一括作成
-POST {{baseURL}}/decks HTTP/1.1
-Content-Type: application/json
+# ### デッキ情報の一括作成
+# POST {{baseURL}}/decks HTTP/1.1
+# Content-Type: application/json
 
-{
-    "decks": [
-        {
-            "name": "ラクシャビス",
-            "pronounce": "らくしゃびす",
-            "remarks": "烙印クシャトリラビーステッドの略"
-        }
-    ]
-}
+# {
+#     "decks": [
+#         {
+#             "name": "ラクシャビス",
+#             "pronounce": "らくしゃびす",
+#             "remarks": "烙印クシャトリラビーステッドの略"
+#         }
+#     ]
+# }
 
-### デッキ情報の一括更新
-PUT {{baseURL}}/decks HTTP/1.1
-Content-Type: application/json
+# ### デッキ情報の一括更新
+# PUT {{baseURL}}/decks HTTP/1.1
+# Content-Type: application/json
 
-{
-    "decks": [
-        {
-            "id": "1",
-            "name": "赤き竜",
-            "pronounce": "あかきりゅう",
-            "remarks": "「赤き竜」の名称で繋がるカテゴリ"
-        },
-        {
-            "id": "2",
-            "name": "アクアアクトレス",
-            "pronounce": "あくああくとれす",
-            "remarks": "カードは悪くないんだけどね"
-        }
-    ]
-}
+# {
+#     "decks": [
+#         {
+#             "id": "1",
+#             "name": "赤き竜",
+#             "pronounce": "あかきりゅう",
+#             "remarks": "「赤き竜」の名称で繋がるカテゴリ"
+#         },
+#         {
+#             "id": "2",
+#             "name": "アクアアクトレス",
+#             "pronounce": "あくああくとれす",
+#             "remarks": "カードは悪くないんだけどね"
+#         }
+#     ]
+# }
 
-###  デッキ情報の一括削除
-DELETE {{baseURL}}/decks HTTP/1.1
-Content-Type: application/json
+# ###  デッキ情報の一括削除
+# DELETE {{baseURL}}/decks HTTP/1.1
+# Content-Type: application/json
 
-{
-    "deckIds": ["405"]
-}
+# {
+#     "deckIds": ["405"]
+# }
