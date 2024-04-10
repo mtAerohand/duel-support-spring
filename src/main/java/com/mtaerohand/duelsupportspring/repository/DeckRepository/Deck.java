@@ -15,6 +15,7 @@ import lombok.Data;
 @Data
 @Table(name = "decks")
 @Entity
+// TODO: 監査情報を自動で挿入したい
 public class Deck {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

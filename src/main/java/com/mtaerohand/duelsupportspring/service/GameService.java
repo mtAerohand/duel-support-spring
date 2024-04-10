@@ -81,6 +81,8 @@ public class GameService {
      * 
      * @param req 試合情報の一括作成(寛容)リクエスト
      */
+    // TODO: suppresswarningを外す
+    // TODO: データ登録をユーザIDごとに一括削除→登録の方式も用意する
     @SuppressWarnings("null")
     public CreateGamesTorelantResponse createGamesTorelant(CreateGamesTorelantRequest req) {
         List<Game> games = modelMapper.map(req.getGames(), new TypeToken<List<Game>>() {
