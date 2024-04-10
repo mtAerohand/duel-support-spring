@@ -13,7 +13,7 @@ import lombok.Data;
  */
 // TODO: バリデーションエラーのメッセージを後でまとめる
 @Data
-public class Game {
+public class CreateGameRequestGame {
     @NotNull(message = "モードIDが空です。")
     private Integer modeId;
 

@@ -11,5 +11,5 @@ import lombok.Data;
 public class CreateGamesTorelantRequest {
     private String userId;
 
-    private List<Game> games;
+    private List<CreateGamesTorelantRequestGame> games;
 }

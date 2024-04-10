@@ -13,5 +13,5 @@ public class CreateGamesRequest {
     private String userId;
 
     @Valid
-    private List<Game> games;
+    private List<CreateGameRequestGame> games;
 }
