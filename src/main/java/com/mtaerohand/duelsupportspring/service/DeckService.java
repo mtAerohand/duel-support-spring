@@ -54,7 +54,6 @@ public class DeckService {
         if (id == null) {
             return res;
         } else {
-            // TODO: エラーメッセージまとめる
             Deck deck = deckRepository.findById(id).orElseThrow(() -> new CustomException("errors.e001"));
             res = modelMapper.map(deck, GetDeckResponse.class);
             return res;

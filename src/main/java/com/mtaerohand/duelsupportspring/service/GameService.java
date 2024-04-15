@@ -22,7 +22,6 @@ import com.mtaerohand.duelsupportspring.repository.UserRepository.UserRepository
 import lombok.RequiredArgsConstructor;
 
 // TODO: Transactional周りを整理する
-// TODO: エラーメッセージを外部ファイルにまとめたい
 /**
  * 試合情報サービス
  */

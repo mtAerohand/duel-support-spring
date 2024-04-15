@@ -8,7 +8,6 @@ import lombok.Data;
 /**
  * デッキ分布一覧情報の取得リクエスト
  */
-// TODO: エラーメッセージまとめる
 @Data
 public class GetDeckDistributionsRequest {
     @NotNull

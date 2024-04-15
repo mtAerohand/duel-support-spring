@@ -16,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 /**
  * デッキ情報コントローラ
  */
-// TODO: バージョンをpropertiesで管理する
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1")

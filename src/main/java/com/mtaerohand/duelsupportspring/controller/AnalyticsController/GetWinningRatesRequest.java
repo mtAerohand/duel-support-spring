@@ -8,7 +8,6 @@ import lombok.Data;
 /**
  * 上位デッキの対面勝率一覧情報の取得リクエスト
  */
-// TODO: エラーメッセージまとめる
 @Data
 public class GetWinningRatesRequest {
     @NotNull

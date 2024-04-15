@@ -11,31 +11,30 @@ import lombok.Data;
 /**
  * 試合情報の一括作成リクエスト/試合
  */
-// TODO: バリデーションエラーのメッセージを後でまとめる
 @Data
 public class CreateGameRequestGame {
-    @NotNull(message = "モードIDが空です。")
+    @NotNull
     private Integer modeId;
 
-    @NotNull(message = "モード詳細IDが空です。")
+    @NotNull
     private Integer modeDetailId;
 
-    @NotNull(message = "試合日時が空です。")
+    @NotNull
     private LocalDateTime datetime;
 
-    @NotNull(message = "私用デッキIDが空です。")
+    @NotNull
     private Integer myDeckId;
 
-    @NotNull(message = "先後が空です。")
+    @NotNull
     private Boolean isFirstAttack;
 
     private Integer opDeckId;
 
-    @NotNull(message = "結果が空です。")
-    @Min(value = 0, message = "結果の値が不正です。")
-    @Max(value = 2, message = "結果の値が不正です。")
+    @NotNull
+    @Min(value = 0)
+    @Max(value = 2)
     private Integer result;
 
-    @Size(max = 100, message = "備考は100文字以内で入力してください。")
+    @Size(max = 100)
     private String remarks;
 }
