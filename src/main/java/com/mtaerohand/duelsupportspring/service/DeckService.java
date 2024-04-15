@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.mtaerohand.duelsupportspring.controller.DeckController.GetDeckResponse;
 import com.mtaerohand.duelsupportspring.controller.DeckController.GetDecksResponse.GetDecksResponse;
 import com.mtaerohand.duelsupportspring.controller.DeckController.GetDecksResponse.GetDecksResponseDeck;
+import com.mtaerohand.duelsupportspring.controller.ExceptionHandler.CustomException;
 import com.mtaerohand.duelsupportspring.repository.DeckRepository.Deck;
 import com.mtaerohand.duelsupportspring.repository.DeckRepository.DeckRepository;
 
@@ -54,7 +55,7 @@ public class DeckService {
             return res;
         } else {
             // TODO: エラーメッセージまとめる
-            Deck deck = deckRepository.findById(id).orElseThrow(() -> new RuntimeException("指定されたIDのデッキが存在しません。"));
+            Deck deck = deckRepository.findById(id).orElseThrow(() -> new CustomException("errors.e001"));
             res = modelMapper.map(deck, GetDeckResponse.class);
             return res;
         }

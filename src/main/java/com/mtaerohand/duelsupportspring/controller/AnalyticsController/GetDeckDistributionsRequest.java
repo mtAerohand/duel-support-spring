@@ -11,10 +11,10 @@ import lombok.Data;
 // TODO: エラーメッセージまとめる
 @Data
 public class GetDeckDistributionsRequest {
-    @NotNull(message = "モードIDが空です。")
+    @NotNull
     private Integer modeId;
 
-    @NotNull(message = "モード詳細IDが空です。")
+    @NotNull
     private Integer modeDetailId;
 
     private LocalDateTime datetimeFrom;

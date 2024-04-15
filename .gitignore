@@ -1,6 +1,7 @@
 ### Custom ###
 *.http*
 *.jar
+*.yml
 
 HELP.md
 target/

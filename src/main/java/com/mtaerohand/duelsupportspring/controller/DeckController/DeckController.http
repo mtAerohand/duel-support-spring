@@ -5,7 +5,7 @@
 GET {{baseURL}}/decks HTTP/1.1
 
 ### デッキ情報の取得
-GET {{baseURL}}/decks/1 HTTP/1.1
+GET {{baseURL}}/decks/1000 HTTP/1.1
 
 # ### デッキ情報の一括作成
 # POST {{baseURL}}/decks HTTP/1.1
