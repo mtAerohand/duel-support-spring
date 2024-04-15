@@ -49,40 +49,4 @@ public class DeckController {
         GetDeckResponse res = deckService.getDeck(id);
         return res;
     }
-
-    /**
-     * デッキ情報の一括作成
-     * 
-     * @param req デッキ情報の一括作成リクエスト
-     * @return デッキ情報の一括作成レスポンス
-     */
-    // @PostMapping("decks")
-    // @ResponseStatus(HttpStatus.CREATED)
-    // public CreateDecksResponse createDecks(@Valid @RequestBody CreateDecksRequest
-    // req) {
-    // CreateDecksResponse res = deckService.createDecks(req);
-    // return res;
-    // }
-
-    /**
-     * デッキ情報の一括更新
-     * 
-     * @param req デッキ情報の一括更新リクエスト
-     * @return デッキ情報の一括更新レスポンス
-     */
-    // @PutMapping("decks")
-    // @ResponseStatus(HttpStatus.CREATED)
-    // public void updateDecks(@Valid @RequestBody UpdateDecksRequest req) {
-    // deckService.updateDecks(req);
-    // }
-
-    /**
-     * デッキ情報の一括削除
-     * 
-     */
-    // @DeleteMapping("decks")
-    // @ResponseStatus(HttpStatus.OK)
-    // public void deleteDecks(@Valid @RequestBody DeleteDecksRequest req) {
-    // deckService.deleteDecks(req);
-    // }
 }
