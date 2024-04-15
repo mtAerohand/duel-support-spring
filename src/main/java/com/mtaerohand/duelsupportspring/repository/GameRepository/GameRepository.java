@@ -13,7 +13,6 @@ import org.springframework.stereotype.Repository;
 /**
  * 試合情報リポジトリ
  */
-// TODO: sqlの形を整える
 @Repository
 public interface GameRepository extends JpaRepository<Game, Integer>, JpaSpecificationExecutor<Game> {
         // デッキ分布一覧情報の取得

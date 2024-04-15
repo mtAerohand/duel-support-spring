@@ -9,6 +9,7 @@ import org.modelmapper.TypeToken;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mtaerohand.duelsupportspring.controller.AnalyticsController.GetDeckDistributionsRequest;
 import com.mtaerohand.duelsupportspring.controller.AnalyticsController.GetWinningRatesRequest;
@@ -28,6 +29,7 @@ import lombok.RequiredArgsConstructor;
  */
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class AnalyticsService {
     private final GameRepository gameRepository;
 

@@ -17,7 +17,6 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "decks")
 @Entity
-// TODO: 監査情報を自動で挿入したい
 public class Deck extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

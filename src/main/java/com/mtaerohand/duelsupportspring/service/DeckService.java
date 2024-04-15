@@ -6,6 +6,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mtaerohand.duelsupportspring.controller.DeckController.GetDeckResponse;
 import com.mtaerohand.duelsupportspring.controller.DeckController.GetDecksResponse.GetDecksResponse;
@@ -16,12 +17,12 @@ import com.mtaerohand.duelsupportspring.repository.DeckRepository.DeckRepository
 
 import lombok.RequiredArgsConstructor;
 
-// TODO: Transactionalつけたい
 /**
  * デッキ情報サービス
  */
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class DeckService {
     private final DeckRepository deckRepository;
 
