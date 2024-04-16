@@ -95,4 +95,11 @@ public interface GameRepository extends JpaRepository<Game, Integer>, JpaSpecifi
                         @Param("modeDetailId") Integer modeDetailId, @Param("myDeckId") Integer myDeckId,
                         @Param("opDeckId") Integer opDeckId, @Param("datetimeFrom") LocalDateTime datetimeFrom,
                         @Param("datetimeTo") LocalDateTime datetimeTo);
+
+        /**
+         * ユーザIDに紐作れコードの一括削除
+         *
+         * @param userId
+         */
+        void deleteByUserId(String userId);
 }

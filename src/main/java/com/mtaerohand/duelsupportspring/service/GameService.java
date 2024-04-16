@@ -79,15 +79,22 @@ public class GameService {
      * 
      * @param req 試合情報の一括作成(寛容)リクエスト
      */
-    // TODO: データ登録をユーザIDごとに一括削除→登録の方式も用意する
     public CreateGamesTorelantResponse createGamesTorelant(CreateGamesTorelantRequest req) {
+        // 入力データを試合エンティティのリストにマッピング
         List<Game> games = modelMapper.map(req.getGames(), new TypeToken<List<Game>>() {
         }.getType());
+        // 保存データがnullの場合、空のlistを設定
         if (games == null) {
             games = new ArrayList<Game>();
         }
 
+        // ユーザIDが入力されている場合は保持
         String userId = req.getUserId() == null ? "" : req.getUserId().trim();
+
+        // ユーザIDに紐づく試合データを全件削除
+        if (!userId.isBlank()) {
+            gameRepository.deleteByUserId(userId);
+        }
 
         // 不正なデータをフィルタリング
         games = torelantFilter(games);
@@ -105,6 +112,7 @@ public class GameService {
             userRepository.save(user);
         }
 
+        // データを全件保存
         List<Game> createdGames = gameRepository.saveAll(games);
 
         List<CreateGamesTorelantResponseGame> resGames = modelMapper.map(createdGames,
